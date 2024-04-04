@@ -18,11 +18,6 @@ class StudentListAdapter (val studentList:ArrayList<Student>)
         return StudentViewHolder(binding)
 
     }
-
-    override fun getItemCount(): Int {
-        return studentList.size
-    }
-
     override fun onBindViewHolder(holder: StudentViewHolder, position: Int) {
         holder.binding.txtID.text = studentList[position].id
         holder.binding.txtName.text = studentList[position].name
@@ -31,6 +26,12 @@ class StudentListAdapter (val studentList:ArrayList<Student>)
             Navigation.findNavController(it).navigate(action)
         }
     }
+
+    override fun getItemCount(): Int {
+        return studentList.size
+    }
+
+
     fun updateStudentList(newStudentList: ArrayList<Student>) {
         studentList.clear()
         studentList.addAll(newStudentList)

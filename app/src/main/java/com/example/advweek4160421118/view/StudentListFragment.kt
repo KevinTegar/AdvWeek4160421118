@@ -38,8 +38,16 @@ class StudentListFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(ListViewModel::class.java)
         viewModel.refresh()
 
-        binding.recyclerView.layoutManager = LinearLayoutManager(context)
-        binding.recyclerView.adapter = studentListAdapter
+        binding.recView.layoutManager = LinearLayoutManager(context)
+        binding.recView.adapter = studentListAdapter
+        binding.refreshLayout.setOnRefreshListener {
+            binding.recView.visibility = View.GONE
+            binding.txtError.visibility = View.GONE
+            binding.progressLoad.visibility = View.VISIBLE
+            viewModel.refresh()
+            binding.refreshLayout.isRefreshing = false
+        }
+
 
         observeViewModel()
     }
@@ -54,6 +62,16 @@ class StudentListFragment : Fragment() {
                 binding.txtError?.visibility = View.GONE
             }
         })
+        viewModel.loadingLD.observe(viewLifecycleOwner, Observer {
+            if(it == true) {
+                binding.recView.visibility = View.GONE
+                binding.progressLoad.visibility = View.VISIBLE
+            } else {
+                binding.recView.visibility = View.VISIBLE
+                binding.progressLoad.visibility = View.GONE
+            }
+        })
+
 
     }
 
